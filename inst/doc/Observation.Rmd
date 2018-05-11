@@ -1,0 +1,154 @@
+---
+title: "Observation: Collect and Process Physical Activity Direct Observation Data"
+author: "Paul R. Hibbing"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Observation: Collect and Process Physical Activity Direct Observation Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 1. Overview
+
+The purpose of `Observation` is to provide a free and easy-to-use tool for working with direct observation data in the realm of physical activity. The package has two parts, the first for collecting data, and the second for processing it. Each part has a major function associated with it (i.e., `data_collection_program` to collect data and `compendium_reference` to process), and each major function is able to be used interatively or manually. The method is presented in detail in the text and supplemental material of [Hibbing et al. (2018)](https://www.ncbi.nlm.nih.gov/pubmed/29135657). This vignette is designed to provide instructions for use to users who may not be familiar with R, and focuses on interactive use of the package.
+
+## 2. Download and Installation
+
+### 2.1 A First Critical Note (Don't miss the second critical note [Section 3.2])
+
+The following sections provide basic instructions for installing software. For those who already have R and RStudio installed, please note that **having outdated versions of the applications can affect the functionality of `Observation`**. In particular, updating RStudio can help with certain issues (go to `Help -> Check for Updates`). The need to update R has not been specifically confirmed, and should presumably not be necessary, perhaps unless you have a fairly old version (e.g. < 3.0). Before updating your application(s), you may wish to try some of the suggestions in Section 3.2 to improve your experience using `Observation`.
+
+### 2.2 R and RStudio
+
+To use `Observation`, you must naturally have R installed, which you can download for free at https://www.r-project.org. It is recommended to also download and install RStudio for free from [https://www.rstudio.com](https://www.rstudio.com/products/rstudio/download/).
+
+R is a programming language, whereas RStudio is an "integrated development environment." That is, RStudio includes additional functionality to streamline the way you use R.
+
+### 2.3 The Observation Package
+
+To install the `Observation` package, open Rstudio and type into the console (bottom left pane) `install.packages("Observation")`. Press enter to execute the command, and the package will be automatically installed.
+
+## 3 Using the Observation Package
+
+You can use `Observation` in several ways, but the most recommendable is with a `.R` file. This is simply a text file that stores R commands. To create a `.R` file, open RStudio and select `File -> New File -> R Script`. Now all you need to do is populate the file with code and run it (by highlighting the code and clicking `Run` in the top right of the pane). You can copy the below code into your file to try it out, and then customize the code to meet your needs.
+
+### 3.1 Code
+
+```{r example, eval = FALSE}
+
+# First, you need to "attach" the package. You can think of this as loading it. 
+# This step is technically optional, but to use the package functions without
+# it, you need to write "Observation::" before each command, e.g.
+# "Observation::data_collection_program()"
+
+library(Observation)
+
+# Now it's time to run the Observation program, which will guide you through the
+# data collection process described by Hibbing et al. (2018).
+
+# data_collection_program()
+  # ^This only runs the program, but does not store the data.
+  # You will want to define an object that stores the data you collect.
+  # To do so, you provide the name ("my_data") and use the "<-" operator
+  # to assign the results of data_collection_program() to an object of
+  # that name.
+
+my_data <- data_collection_program()
+
+# You can view your work with
+
+View(my_data)
+
+# There is also a sample data set you can examine with
+
+data(example_data, package = "Observation")
+View(example_data)
+
+# The format of "my_data" and "example_data" (and any other data
+# collected with data_collection_program()) will be the same. Information
+# about what each column represents is available with
+
+help(example_data, package = "Observation")
+
+# Once you are finished collecting data, you should save it to an external file.
+# There are a lot of options both for saving in different formats, and for
+# managing data from multiple participants. However, this vignette is not
+# intended as a tutorial for those types of tasks, and you probably already
+# have a system you would rather use at that level. Thus, a minimal example is
+# provided here, and the work of determining the appropriate management scheme
+# for a given study is left to the reader.
+
+write.csv(my_data, file = "My Example Observation Data.csv", row.names = FALSE)
+
+# Naturally, you should change the filename in the above code to suit your
+# needs, and be careful to change the filename each time you run your code, to
+# avoid overwriting previously-collected data files. You can easily automate the
+# data saving process to avoid hazards, but again, that is beyond the scope of
+# this vignette.
+
+# Next, it is time to process the data, again via the scheme described by
+# Hibbing et al. (2018), in reference to the Compendium of Physical Activities.
+# As before, you need to assign the processed data to an object via "<-",
+# which has been named "my_data_processed" below.
+
+my_data_processed <- compendium_reference(my_data)
+
+# You can save this processed data with similar code as given above.
+
+write.csv(my_data_processed, file = "My Example_Processed.csv", row.names = FALSE)
+
+```
+
+### 3.2 A Second Critical Note
+
+When used interactively, `Observation` depends heavily on the `svDialogs` package, which generates dialog boxes. `svDialogs` is focused on providing functionality that works across operating systems and R interfaces, which sometimes means that default settings behave in a less-than-ideal way in a context like `Observation`. It should be possible to circumvent such issues, but an understanding of how both packages are structured is essential for doing so.
+
+`Observation` is set up to use the default settings of all the `svDialogs` functions it uses, which ensures a working outcome for all users. However, `Observation` also gives users the capability of experimenting with different `svDialogs` settings. The catch is that, in the current CRAN version of `svDialogs` (v 1.0.0), there are not really options to customize. To get those, you will have to work with development versions of `svDialogs` instead of the CRAN version, until the development versions are released. Fortunately this is easy to do. The safest bet is to run the following code.
+
+```{r development, eval = FALSE}
+
+if (!"devtools" %in% installed.packages()) install.packages("devtools")
+
+devtools::install_github("SciViews/svDialogs")
+# ^ This installs the official development version, which has accepted some
+# specific changes I made to make using `Observation` more pleasant. As a
+# development version, it may be changing continually in ways that could
+# potentially affect `Observation`. If you're not pleased with the behavior
+# you're getting, you can try installing my personal copy, since I'm not
+# planning to continue contributing to development for `svDialogs`.
+
+# devtools::install_github("paulhibbing/svDialogs")
+
+```
+
+Once you have a development version of `svDialogs` installed, you can adapt your usage of `Observation` code to hopefully improve your experience using the package, especially the `compendium_reference` function. In particular, I recommend trying the following.
+
+```{r customize, eval = FALSE}
+
+library(Observation)
+data(example_data, package = "Observation")
+compendium_reference(example_data, rstudio = FALSE)
+
+```
+
+If you are using RStudio desktop, the above code (loosely) allows you to bypass RStudio's dialog boxes and access your system's instead. You can use the same option (`rstudio = FALSE`) in `data_collection_program` as well. It is possible that this will make things worse, so you can always go back to the default settings by taking out `rstudio = FALSE`. Development is active on `Observation`, so you can post an issue on the [GitHub page](https://github.com/paulhibbing/Observation/issues), and new features can be added. Development is also open-source, so if you want to attempt implementing a new feature yourself, you can do so and submit a pull request to dialog about how it would enhance the package.
+
+### 3.3 Additional Comments
+
+* It is not necessary to run `compendium_reference` immediately after collecting data. If you store the data you collect, you can load it again later (e.g. using `my_data <- read.csv("My Example Observation Data.csv", stringsAsFactors = FALSE)`) and then run `compendium_reference(my_data)`.
+
+* If you will be performing all your analyses in R, it is recommendable to use `save` and `load`, rather than `write.csv` and `read.csv`.
+
+* If you are planning to move forward with csv files, and it is taking too long to read/write the files, you should install the `data.table` package and use the `fread` and `fwrite` commands instead. Those commands work essentially the same as `read.csv` and `write.csv`, but operate much faster.
+
+* When you are specifying filenames, the safest thing to do is write out the whole file path. For example, instead of writing `file = "My Example Observation Data.csv"` inside `write.csv()`, you may wish to write something more like `file = "C:/Users/Me/Documents/My Example Observation Data.csv"`. Otherwise, the command `getwd()` is helpful for finding files if you're not sure where you saved them.
+
+* The general approach for the `compendium_reference` function is to examine the activity descriptions provided during data collection and determine the intensity category (when it was not previously detected) by cross-referencing the [2011 Compendium of Physical Activities](https://sites.google.com/site/compendiumofphysicalactivities/home).
