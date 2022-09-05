@@ -1,7 +1,7 @@
 Package: Observation
 Type: Package
 Title: Collect and Process Physical Activity Direct Observation Data
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: person(c("Paul", "R."), "Hibbing", email = "paulhibbing@gmail.com",
 		  role = c("aut","cre"))
 Depends: R (>= 2.10)
@@ -11,15 +11,15 @@ Description: Two-part system for first collecting then managing direct
 License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: svDialogs (>= 1.0.0), AGread (>= 0.1.2), stats
-RoxygenNote: 6.0.1
+Imports: svDialogs (>= 1.0.0), stats
+RoxygenNote: 7.1.2
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/paulhibbing/Observation
 BugReports: https://github.com/paulhibbing/Observation/issues
 NeedsCompilation: no
-Packaged: 2018-05-11 07:56:17 UTC; Paul
+Packaged: 2022-09-05 04:36:08 UTC; prhibbing
 Author: Paul R. Hibbing [aut, cre]
 Maintainer: Paul R. Hibbing <paulhibbing@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-05-11 13:01:20 UTC
+Date/Publication: 2022-09-05 08:30:11 UTC

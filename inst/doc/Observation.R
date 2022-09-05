@@ -1,10 +1,10 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ----example, eval = FALSE-----------------------------------------------
+## ----example, eval = FALSE----------------------------------------------------
 #  
 #  # First, you need to "attach" the package. You can think of this as loading it.
 #  # This step is technically optional, but to use the package functions without
@@ -68,7 +68,7 @@ knitr::opts_chunk$set(
 #  write.csv(my_data_processed, file = "My Example_Processed.csv", row.names = FALSE)
 #  
 
-## ----development, eval = FALSE-------------------------------------------
+## ----development, eval = FALSE------------------------------------------------
 #  
 #  if (!"devtools" %in% installed.packages()) install.packages("devtools")
 #  
@@ -83,7 +83,7 @@ knitr::opts_chunk$set(
 #  # devtools::install_github("paulhibbing/svDialogs")
 #  
 
-## ----customize, eval = FALSE---------------------------------------------
+## ----customize, eval = FALSE--------------------------------------------------
 #  
 #  library(Observation)
 #  data(example_data, package = "Observation")

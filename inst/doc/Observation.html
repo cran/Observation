@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Paul R. Hibbing" />
 
-<meta name="date" content="2018-05-11" />
+<meta name="date" content="2022-09-04" />
 
 <title>Observation: Collect and Process Physical Activity Direct Observation Data</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
-
-<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -50,9 +79,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -83,7 +112,30 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
 
 
 
@@ -97,9 +149,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -268,8 +317,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -278,134 +331,220 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 
-<h1 class="title toc-ignore">Observation: Collect and Process Physical Activity Direct Observation Data</h1>
-<h4 class="author"><em>Paul R. Hibbing</em></h4>
-<h4 class="date"><em>2018-05-11</em></h4>
+<h1 class="title toc-ignore">Observation: Collect and Process Physical
+Activity Direct Observation Data</h1>
+<h4 class="author">Paul R. Hibbing</h4>
+<h4 class="date">2022-09-04</h4>
 
 
 
 <div id="overview" class="section level2">
 <h2>1. Overview</h2>
-<p>The purpose of <code>Observation</code> is to provide a free and easy-to-use tool for working with direct observation data in the realm of physical activity. The package has two parts, the first for collecting data, and the second for processing it. Each part has a major function associated with it (i.e., <code>data_collection_program</code> to collect data and <code>compendium_reference</code> to process), and each major function is able to be used interatively or manually. The method is presented in detail in the text and supplemental material of <a href="https://www.ncbi.nlm.nih.gov/pubmed/29135657">Hibbing et al. (2018)</a>. This vignette is designed to provide instructions for use to users who may not be familiar with R, and focuses on interactive use of the package.</p>
+<p>The purpose of <code>Observation</code> is to provide a free and
+easy-to-use tool for working with direct observation data in the realm
+of physical activity. The package has two parts, the first for
+collecting data, and the second for processing it. Each part has a major
+function associated with it (i.e., <code>data_collection_program</code>
+to collect data and <code>compendium_reference</code> to process), and
+each major function is able to be used interactively or manually. The
+method is presented in detail in the text and supplemental material of
+<a href="https://pubmed.ncbi.nlm.nih.gov/29135657/">Hibbing et
+al. (2018)</a>. This vignette is designed to provide instructions for
+use to users who may not be familiar with R, and focuses on interactive
+use of the package.</p>
 </div>
 <div id="download-and-installation" class="section level2">
 <h2>2. Download and Installation</h2>
 <div id="a-first-critical-note-dont-miss-the-second-critical-note-section-3.2" class="section level3">
-<h3>2.1 A First Critical Note (Don’t miss the second critical note [Section 3.2])</h3>
-<p>The following sections provide basic instructions for installing software. For those who already have R and RStudio installed, please note that <strong>having outdated versions of the applications can affect the functionality of <code>Observation</code></strong>. In particular, updating RStudio can help with certain issues (go to <code>Help -&gt; Check for Updates</code>). The need to update R has not been specifically confirmed, and should presumably not be necessary, perhaps unless you have a fairly old version (e.g. &lt; 3.0). Before updating your application(s), you may wish to try some of the suggestions in Section 3.2 to improve your experience using <code>Observation</code>.</p>
+<h3>2.1 A First Critical Note (Don’t miss the second critical note
+[Section 3.2])</h3>
+<p>The following sections provide basic instructions for installing
+software. For those who already have R and RStudio installed, please
+note that <strong>having outdated versions of the applications can
+affect the functionality of <code>Observation</code></strong>. In
+particular, updating RStudio can help with certain issues (go to
+<code>Help -&gt; Check for Updates</code>). The need to update R has not
+been specifically confirmed, and should presumably not be necessary,
+perhaps unless you have a fairly old version (e.g. &lt; 3.0). Before
+updating your application(s), you may wish to try some of the
+suggestions in Section 3.2 to improve your experience using
+<code>Observation</code>.</p>
 </div>
 <div id="r-and-rstudio" class="section level3">
 <h3>2.2 R and RStudio</h3>
-<p>To use <code>Observation</code>, you must naturally have R installed, which you can download for free at <a href="https://www.r-project.org" class="uri">https://www.r-project.org</a>. It is recommended to also download and install RStudio for free from <a href="https://www.rstudio.com/products/rstudio/download/">https://www.rstudio.com</a>.</p>
-<p>R is a programming language, whereas RStudio is an “integrated development environment.” That is, RStudio includes additional functionality to streamline the way you use R.</p>
+<p>To use <code>Observation</code>, you must naturally have R installed,
+which you can download for free at <a href="https://www.r-project.org" class="uri">https://www.r-project.org</a>. It is recommended to also
+download and install RStudio for free from <a href="https://www.rstudio.com/products/rstudio/download/">https://www.rstudio.com</a>.</p>
+<p>R is a programming language, whereas RStudio is an “integrated
+development environment.” That is, RStudio includes additional
+functionality to streamline the way you use R.</p>
 </div>
 <div id="the-observation-package" class="section level3">
 <h3>2.3 The Observation Package</h3>
-<p>To install the <code>Observation</code> package, open Rstudio and type into the console (bottom left pane) <code>install.packages(&quot;Observation&quot;)</code>. Press enter to execute the command, and the package will be automatically installed.</p>
+<p>To install the <code>Observation</code> package, open Rstudio and
+type into the console (bottom left pane)
+<code>install.packages(&quot;Observation&quot;)</code>. Press enter to execute the
+command, and the package will be automatically installed.</p>
 </div>
 </div>
 <div id="using-the-observation-package" class="section level2">
 <h2>3 Using the Observation Package</h2>
-<p>You can use <code>Observation</code> in several ways, but the most recommendable is with a <code>.R</code> file. This is simply a text file that stores R commands. To create a <code>.R</code> file, open RStudio and select <code>File -&gt; New File -&gt; R Script</code>. Now all you need to do is populate the file with code and run it (by highlighting the code and clicking <code>Run</code> in the top right of the pane). You can copy the below code into your file to try it out, and then customize the code to meet your needs.</p>
+<p>You can use <code>Observation</code> in several ways, but the most
+recommendable is with a <code>.R</code> file. This is simply a text file
+that stores R commands. To create a <code>.R</code> file, open RStudio
+and select <code>File -&gt; New File -&gt; R Script</code>. Now all you
+need to do is populate the file with code and run it (by highlighting
+the code and clicking <code>Run</code> in the top right of the pane).
+You can copy the below code into your file to try it out, and then
+customize the code to meet your needs.</p>
 <div id="code" class="section level3">
 <h3>3.1 Code</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># First, you need to &quot;attach&quot; the package. You can think of this as loading it. </span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># This step is technically optional, but to use the package functions without</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># it, you need to write &quot;Observation::&quot; before each command, e.g.</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># &quot;Observation::data_collection_program()&quot;</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw">library</span>(Observation)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># Now it's time to run the Observation program, which will guide you through the</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># data collection process described by Hibbing et al. (2018).</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co"># data_collection_program()</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">  <span class="co"># ^This only runs the program, but does not store the data.</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">  <span class="co"># You will want to define an object that stores the data you collect.</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">  <span class="co"># To do so, you provide the name (&quot;my_data&quot;) and use the &quot;&lt;-&quot; operator</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">  <span class="co"># to assign the results of data_collection_program() to an object of</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">  <span class="co"># that name.</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19">my_data &lt;-<span class="st"> </span><span class="kw">data_collection_program</span>()</a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co"># You can view your work with</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="kw">View</span>(my_data)</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co"># There is also a sample data set you can examine with</span></a>
-<a class="sourceLine" id="cb1-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="kw">data</span>(example_data, <span class="dt">package =</span> <span class="st">&quot;Observation&quot;</span>)</a>
-<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="kw">View</span>(example_data)</a>
-<a class="sourceLine" id="cb1-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co"># The format of &quot;my_data&quot; and &quot;example_data&quot; (and any other data</span></a>
-<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co"># collected with data_collection_program()) will be the same. Information</span></a>
-<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co"># about what each column represents is available with</span></a>
-<a class="sourceLine" id="cb1-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb1-34" data-line-number="34"><span class="kw">help</span>(example_data, <span class="dt">package =</span> <span class="st">&quot;Observation&quot;</span>)</a>
-<a class="sourceLine" id="cb1-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb1-36" data-line-number="36"><span class="co"># Once you are finished collecting data, you should save it to an external file.</span></a>
-<a class="sourceLine" id="cb1-37" data-line-number="37"><span class="co"># There are a lot of options both for saving in different formats, and for</span></a>
-<a class="sourceLine" id="cb1-38" data-line-number="38"><span class="co"># managing data from multiple participants. However, this vignette is not</span></a>
-<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="co"># intended as a tutorial for those types of tasks, and you probably already</span></a>
-<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="co"># have a system you would rather use at that level. Thus, a minimal example is</span></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="co"># provided here, and the work of determining the appropriate management scheme</span></a>
-<a class="sourceLine" id="cb1-42" data-line-number="42"><span class="co"># for a given study is left to the reader.</span></a>
-<a class="sourceLine" id="cb1-43" data-line-number="43"></a>
-<a class="sourceLine" id="cb1-44" data-line-number="44"><span class="kw">write.csv</span>(my_data, <span class="dt">file =</span> <span class="st">&quot;My Example Observation Data.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb1-46" data-line-number="46"><span class="co"># Naturally, you should change the filename in the above code to suit your</span></a>
-<a class="sourceLine" id="cb1-47" data-line-number="47"><span class="co"># needs, and be careful to change the filename each time you run your code, to</span></a>
-<a class="sourceLine" id="cb1-48" data-line-number="48"><span class="co"># avoid overwriting previously-collected data files. You can easily automate the</span></a>
-<a class="sourceLine" id="cb1-49" data-line-number="49"><span class="co"># data saving process to avoid hazards, but again, that is beyond the scope of</span></a>
-<a class="sourceLine" id="cb1-50" data-line-number="50"><span class="co"># this vignette.</span></a>
-<a class="sourceLine" id="cb1-51" data-line-number="51"></a>
-<a class="sourceLine" id="cb1-52" data-line-number="52"><span class="co"># Next, it is time to process the data, again via the scheme described by</span></a>
-<a class="sourceLine" id="cb1-53" data-line-number="53"><span class="co"># Hibbing et al. (2018), in reference to the Compendium of Physical Activities.</span></a>
-<a class="sourceLine" id="cb1-54" data-line-number="54"><span class="co"># As before, you need to assign the processed data to an object via &quot;&lt;-&quot;,</span></a>
-<a class="sourceLine" id="cb1-55" data-line-number="55"><span class="co"># which has been named &quot;my_data_processed&quot; below.</span></a>
-<a class="sourceLine" id="cb1-56" data-line-number="56"></a>
-<a class="sourceLine" id="cb1-57" data-line-number="57">my_data_processed &lt;-<span class="st"> </span><span class="kw">compendium_reference</span>(my_data)</a>
-<a class="sourceLine" id="cb1-58" data-line-number="58"></a>
-<a class="sourceLine" id="cb1-59" data-line-number="59"><span class="co"># You can save this processed data with similar code as given above.</span></a>
-<a class="sourceLine" id="cb1-60" data-line-number="60"></a>
-<a class="sourceLine" id="cb1-61" data-line-number="61"><span class="kw">write.csv</span>(my_data_processed, <span class="dt">file =</span> <span class="st">&quot;My Example_Processed.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># First, you need to &quot;attach&quot; the package. You can think of this as loading it. </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This step is technically optional, but to use the package functions without</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># it, you need to write &quot;Observation::&quot; before each command, e.g.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;Observation::data_collection_program()&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Observation)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Now it&#39;s time to run the Observation program, which will guide you through the</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># data collection process described by Hibbing et al. (2018).</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># data_collection_program()</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ^This only runs the program, but does not store the data.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You will want to define an object that stores the data you collect.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># To do so, you provide the name (&quot;my_data&quot;) and use the &quot;&lt;-&quot; operator</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># to assign the results of data_collection_program() to an object of</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that name.</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">data_collection_program</span>()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># You can view your work with</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(my_data)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># There is also a sample data set you can examine with</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(example_data, <span class="at">package =</span> <span class="st">&quot;Observation&quot;</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(example_data)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># The format of &quot;my_data&quot; and &quot;example_data&quot; (and any other data</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># collected with data_collection_program()) will be the same. Information</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># about what each column represents is available with</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">help</span>(example_data, <span class="at">package =</span> <span class="st">&quot;Observation&quot;</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Once you are finished collecting data, you should save it to an external file.</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># There are a lot of options both for saving in different formats, and for</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># managing data from multiple participants. However, this vignette is not</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># intended as a tutorial for those types of tasks, and you probably already</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co"># have a system you would rather use at that level. Thus, a minimal example is</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># provided here, and the work of determining the appropriate management scheme</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># for a given study is left to the reader.</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(my_data, <span class="at">file =</span> <span class="st">&quot;My Example Observation Data.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Naturally, you should change the filename in the above code to suit your</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co"># needs, and be careful to change the filename each time you run your code, to</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co"># avoid overwriting previously-collected data files. You can easily automate the</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co"># data saving process to avoid hazards, but again, that is beyond the scope of</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co"># this vignette.</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Next, it is time to process the data, again via the scheme described by</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Hibbing et al. (2018), in reference to the Compendium of Physical Activities.</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co"># As before, you need to assign the processed data to an object via &quot;&lt;-&quot;,</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co"># which has been named &quot;my_data_processed&quot; below.</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>my_data_processed <span class="ot">&lt;-</span> <span class="fu">compendium_reference</span>(my_data)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># You can save this processed data with similar code as given above.</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(my_data_processed, <span class="at">file =</span> <span class="st">&quot;My Example_Processed.csv&quot;</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="a-second-critical-note" class="section level3">
 <h3>3.2 A Second Critical Note</h3>
-<p>When used interactively, <code>Observation</code> depends heavily on the <code>svDialogs</code> package, which generates dialog boxes. <code>svDialogs</code> is focused on providing functionality that works across operating systems and R interfaces, which sometimes means that default settings behave in a less-than-ideal way in a context like <code>Observation</code>. It should be possible to circumvent such issues, but an understanding of how both packages are structured is essential for doing so.</p>
-<p><code>Observation</code> is set up to use the default settings of all the <code>svDialogs</code> functions it uses, which ensures a working outcome for all users. However, <code>Observation</code> also gives users the capability of experimenting with different <code>svDialogs</code> settings. The catch is that, in the current CRAN version of <code>svDialogs</code> (v 1.0.0), there are not really options to customize. To get those, you will have to work with development versions of <code>svDialogs</code> instead of the CRAN version, until the development versions are released. Fortunately this is easy to do. The safest bet is to run the following code.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="cf">if</span> (<span class="op">!</span><span class="st">&quot;devtools&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">installed.packages</span>()) <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;SciViews/svDialogs&quot;</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co"># ^ This installs the official development version, which has accepted some</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co"># specific changes I made to make using `Observation` more pleasant. As a</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co"># development version, it may be changing continually in ways that could</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co"># potentially affect `Observation`. If you're not pleased with the behavior</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># you're getting, you can try installing my personal copy, since I'm not</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co"># planning to continue contributing to development for `svDialogs`.</span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co"># devtools::install_github(&quot;paulhibbing/svDialogs&quot;)</span></a></code></pre></div>
-<p>Once you have a development version of <code>svDialogs</code> installed, you can adapt your usage of <code>Observation</code> code to hopefully improve your experience using the package, especially the <code>compendium_reference</code> function. In particular, I recommend trying the following.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(Observation)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">data</span>(example_data, <span class="dt">package =</span> <span class="st">&quot;Observation&quot;</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">compendium_reference</span>(example_data, <span class="dt">rstudio =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p>If you are using RStudio desktop, the above code (loosely) allows you to bypass RStudio’s dialog boxes and access your system’s instead. You can use the same option (<code>rstudio = FALSE</code>) in <code>data_collection_program</code> as well. It is possible that this will make things worse, so you can always go back to the default settings by taking out <code>rstudio = FALSE</code>. Development is active on <code>Observation</code>, so you can post an issue on the <a href="https://github.com/paulhibbing/Observation/issues">GitHub page</a>, and new features can be added. Development is also open-source, so if you want to attempt implementing a new feature yourself, you can do so and submit a pull request to dialog about how it would enhance the package.</p>
+<p>When used interactively, <code>Observation</code> depends heavily on
+the <code>svDialogs</code> package, which generates dialog boxes.
+<code>svDialogs</code> is focused on providing functionality that works
+across operating systems and R interfaces, which sometimes means that
+default settings behave in a less-than-ideal way in a context like
+<code>Observation</code>. It should be possible to circumvent such
+issues, but an understanding of how both packages are structured is
+essential for doing so.</p>
+<p><code>Observation</code> is set up to use the default settings of all
+the <code>svDialogs</code> functions it uses, which ensures a working
+outcome for all users. However, <code>Observation</code> also gives
+users the capability of experimenting with different
+<code>svDialogs</code> settings. The catch is that, in the current CRAN
+version of <code>svDialogs</code> (v 1.0.0), there are not really
+options to customize. To get those, you will have to work with
+development versions of <code>svDialogs</code> instead of the CRAN
+version, until the development versions are released. Fortunately this
+is easy to do. The safest bet is to run the following code.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="st">&quot;devtools&quot;</span> <span class="sc">%in%</span> <span class="fu">installed.packages</span>()) <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;SciViews/svDialogs&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ^ This installs the official development version, which has accepted some</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># specific changes I made to make using `Observation` more pleasant. As a</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># development version, it may be changing continually in ways that could</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># potentially affect `Observation`. If you&#39;re not pleased with the behavior</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># you&#39;re getting, you can try installing my personal copy, since I&#39;m not</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># planning to continue contributing to development for `svDialogs`.</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># devtools::install_github(&quot;paulhibbing/svDialogs&quot;)</span></span></code></pre></div>
+<p>Once you have a development version of <code>svDialogs</code>
+installed, you can adapt your usage of <code>Observation</code> code to
+hopefully improve your experience using the package, especially the
+<code>compendium_reference</code> function. In particular, I recommend
+trying the following.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Observation)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(example_data, <span class="at">package =</span> <span class="st">&quot;Observation&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">compendium_reference</span>(example_data, <span class="at">rstudio =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>If you are using RStudio desktop, the above code (loosely) allows you
+to bypass RStudio’s dialog boxes and access your system’s instead. You
+can use the same option (<code>rstudio = FALSE</code>) in
+<code>data_collection_program</code> as well. It is possible that this
+will make things worse, so you can always go back to the default
+settings by taking out <code>rstudio = FALSE</code>.</p>
 </div>
 <div id="additional-comments" class="section level3">
 <h3>3.3 Additional Comments</h3>
 <ul>
-<li><p>It is not necessary to run <code>compendium_reference</code> immediately after collecting data. If you store the data you collect, you can load it again later (e.g. using <code>my_data &lt;- read.csv(&quot;My Example Observation Data.csv&quot;, stringsAsFactors = FALSE)</code>) and then run <code>compendium_reference(my_data)</code>.</p></li>
-<li><p>If you will be performing all your analyses in R, it is recommendable to use <code>save</code> and <code>load</code>, rather than <code>write.csv</code> and <code>read.csv</code>.</p></li>
-<li><p>If you are planning to move forward with csv files, and it is taking too long to read/write the files, you should install the <code>data.table</code> package and use the <code>fread</code> and <code>fwrite</code> commands instead. Those commands work essentially the same as <code>read.csv</code> and <code>write.csv</code>, but operate much faster.</p></li>
-<li><p>When you are specifying filenames, the safest thing to do is write out the whole file path. For example, instead of writing <code>file = &quot;My Example Observation Data.csv&quot;</code> inside <code>write.csv()</code>, you may wish to write something more like <code>file = &quot;C:/Users/Me/Documents/My Example Observation Data.csv&quot;</code>. Otherwise, the command <code>getwd()</code> is helpful for finding files if you’re not sure where you saved them.</p></li>
-<li><p>The general approach for the <code>compendium_reference</code> function is to examine the activity descriptions provided during data collection and determine the intensity category (when it was not previously detected) by cross-referencing the <a href="https://sites.google.com/site/compendiumofphysicalactivities/home">2011 Compendium of Physical Activities</a>.</p></li>
+<li><p>It is not necessary to run <code>compendium_reference</code>
+immediately after collecting data. If you store the data you collect,
+you can load it again later (e.g. using
+<code>my_data &lt;- read.csv(&quot;My Example Observation Data.csv&quot;, stringsAsFactors = FALSE)</code>)
+and then run <code>compendium_reference(my_data)</code>.</p></li>
+<li><p>If you will be performing all your analyses in R, it is
+recommendable to use <code>save</code> and <code>load</code>, rather
+than <code>write.csv</code> and <code>read.csv</code>.</p></li>
+<li><p>If you are planning to move forward with csv files, and it is
+taking too long to read/write the files, you should install the
+<code>data.table</code> package and use the <code>fread</code> and
+<code>fwrite</code> commands instead. Those commands work essentially
+the same as <code>read.csv</code> and <code>write.csv</code>, but
+operate much faster.</p></li>
+<li><p>When you are specifying filenames, the safest thing to do is
+write out the whole file path. For example, instead of writing
+<code>file = &quot;My Example Observation Data.csv&quot;</code> inside
+<code>write.csv()</code>, you may wish to write something more like
+<code>file = &quot;C:/Users/Me/Documents/My Example Observation Data.csv&quot;</code>.
+Otherwise, the command <code>getwd()</code> is helpful for finding files
+if you’re not sure where you saved them.</p></li>
+<li><p>The general approach for the <code>compendium_reference</code>
+function is to examine the activity descriptions provided during data
+collection and determine the intensity category (when it was not
+previously detected) by cross-referencing the <a href="https://sites.google.com/site/compendiumofphysicalactivities/home">2011
+Compendium of Physical Activities</a>.</p></li>
 </ul>
 </div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
